@@ -12,7 +12,8 @@ class SeconGatewayRoutes[F[_] : Async : DecryptVerify : SignEncrypt]
 (
   identityLookup: IdentityLookup[F],
   certLookup: CertLookup[F],
-  decrypt: Boolean,
+  server: Boolean,
+  multipart: Boolean,
   uri: Uri,
   httpApp: HttpApp[F]
 ) {
@@ -32,36 +33,26 @@ class SeconGatewayRoutes[F[_] : Async : DecryptVerify : SignEncrypt]
       ))
     }
 
-    HttpRoutes[F] { request =>
+    if (server) HttpRoutes[F] { request =>
       for {
         incomingSeconRequest <- OptionT.liftF(request.as[SeconMessage[F]])
-        outgoingSeconRequest = if (decrypt) {
-          incomingSeconRequest.decryptAndVerify(
-            identityLookup = identityLookup,
-            certLookup = certLookup
-          )
-        } else {
-          incomingSeconRequest.signAndEncrypt(
-            identityLookup = identityLookup,
-            certLookup = certLookup,
-            request = true
-          )
-        }
-        requestMedia <- OptionT.liftF(SeconMessage.seconMultipartEncoder.toMedia(outgoingSeconRequest))
+        outgoingSeconRequest = incomingSeconRequest.decryptAndVerify(identityLookup, certLookup)
+        requestMedia <- OptionT.liftF(SeconMessage.seconOctetStreamEncoder.toMedia(outgoingSeconRequest))
+        response <- routes(request.withMedia(requestMedia))
+        incomingSeconResponse = outgoingSeconRequest.withMedia(response)
+        outgoingSeconResponse = incomingSeconResponse.signAndEncrypt(identityLookup, certLookup, request = false)
+        responseMedia <- OptionT.liftF(incomingSeconRequest.encoder.toMedia(outgoingSeconResponse))
+      } yield
+        response.withMedia(responseMedia)
+    } else HttpRoutes[F] { request =>
+      for {
+        incomingSeconRequest <- OptionT.liftF(request.as[SeconMessage[F]])
+        outgoingSeconRequest = incomingSeconRequest.signAndEncrypt(identityLookup, certLookup, request = true)
+        requestEncoder = if (multipart) SeconMessage.seconMultipartEncoder else SeconMessage.seconOctetStreamEncoder
+        requestMedia <- OptionT.liftF(requestEncoder.toMedia(outgoingSeconRequest))
         response <- routes(request.withMedia(requestMedia))
         incomingSeconResponse <- OptionT.liftF(response.as[SeconMessage[F]])
-        outgoingSeconResponse = if (decrypt) {
-          incomingSeconRequest.signAndEncrypt(
-            identityLookup = identityLookup,
-            certLookup = certLookup,
-            request = false
-          )
-        } else {
-          incomingSeconResponse.decryptAndVerify(
-            identityLookup = identityLookup,
-            certLookup = certLookup
-          )
-        }
+        outgoingSeconResponse = incomingSeconResponse.decryptAndVerify(identityLookup, certLookup)
         responseMedia <- OptionT.liftF(incomingSeconRequest.encoder.toMedia(outgoingSeconResponse))
       } yield
         response.withMedia(responseMedia)

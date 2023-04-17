@@ -12,7 +12,8 @@ import java.nio.file.{Path, Paths}
 
 case class SeconGatewayConfig(
                                serverAddress: Option[SocketAddress[Host]],
-                               decrypt: Option[Boolean],
+                               server: Option[Boolean],
+                               multipart: Option[Boolean],
                                keyStorePath: Path,
                                password: String,
                                ldapUri: Option[Uri],
@@ -21,8 +22,11 @@ case class SeconGatewayConfig(
   val serverAddressOrDefault: SocketAddress[Host] =
     serverAddress.getOrElse(SocketAddress(host"0.0.0.0", port"8080"))
 
-  val decryptOrDefault: Boolean =
-    decrypt.getOrElse(false)
+  val serverOrDefault: Boolean =
+    server.getOrElse(false)
+
+  val multipartOrDefault: Boolean =
+    multipart.getOrElse(true)
 }
 
 object SeconGatewayConfig {

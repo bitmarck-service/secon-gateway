@@ -56,7 +56,8 @@ object SeconGateway extends IOApp {
       proxyRoutes = new SeconGatewayRoutes[F](
         identityLookup = identityLookup,
         certLookup = certLookup,
-        decrypt = config.decryptOrDefault,
+        server = config.serverOrDefault,
+        multipart = config.multipartOrDefault,
         uri = config.uri,
         httpApp = client.toHttpApp
       )
