@@ -38,7 +38,7 @@ jobs:
           CI_VERSION: ${{ github.ref }}
           SBT_OPTS: '-Xmx2G'
         run: |
-          sbt "; test; compile; gateway/assembly"
+          sbt "; compile; test; gateway/assembly"
           mkdir dist
           shopt -s extglob
           mv gateway/target/scala-*/*.sh.bat dist/
