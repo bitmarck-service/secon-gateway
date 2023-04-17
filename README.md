@@ -7,6 +7,18 @@
 ["Verschlüsselung nach GKV Datenaustausch" (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16_-_Security_Schnittstelle.pdf)
 Encryption/Decryption Proxy.
 
+## Example Configuration
+
+```json
+{
+  "serverAddress": "0.0.0.0:8080",
+  "keyStorePath": "keyStore.p12",
+  "password": "pw",
+  "ldapUri": "10.55.60.97:389",
+  "uri": "https://example.com"
+}
+```
+
 # http4s-secon
 
 [![test](https://github.com/bitmarck-service/http4s-secon/actions/workflows/test.yml/badge.svg)](https://github.com/bitmarck-service/http4s-secon/actions/workflows/test.yml)
