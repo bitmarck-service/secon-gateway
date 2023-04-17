@@ -3,7 +3,7 @@ package de.bitmarck.bms.secon.gateway
 import cats.data.OptionT
 import cats.effect.Async
 import de.bitmarck.bms.secon.fs2.{CertLookup, DecryptVerify, IdentityLookup, SignEncrypt}
-import de.bitmarck.bms.secon.http4s.SeconMessage
+import de.bitmarck.bms.secon.http4s.{SeconDecryptMiddleware, SeconEncryptMiddleware, SeconMessage}
 import org.http4s.Uri.Authority
 import org.http4s.headers.Host
 import org.http4s.{HttpApp, HttpRoutes, HttpVersion, Request, Uri}
@@ -33,29 +33,12 @@ class SeconGatewayRoutes[F[_] : Async : DecryptVerify : SignEncrypt]
       ))
     }
 
-    if (server) HttpRoutes[F] { request =>
-      for {
-        incomingSeconRequest <- OptionT.liftF(request.as[SeconMessage[F]])
-        outgoingSeconRequest = incomingSeconRequest.decryptAndVerify(identityLookup, certLookup)
-        requestMedia <- OptionT.liftF(SeconMessage.seconOctetStreamEncoder.toMedia(outgoingSeconRequest))
-        response <- routes(request.withMedia(requestMedia))
-        incomingSeconResponse = outgoingSeconRequest.withMedia(response)
-        outgoingSeconResponse = incomingSeconResponse.signAndEncrypt(identityLookup, certLookup, request = false)
-        responseMedia <- OptionT.liftF(incomingSeconRequest.encoder.toMedia(outgoingSeconResponse))
-      } yield
-        response.withMedia(responseMedia)
-    } else HttpRoutes[F] { request =>
-      for {
-        incomingSeconRequest <- OptionT.liftF(request.as[SeconMessage[F]])
-        outgoingSeconRequest = incomingSeconRequest.signAndEncrypt(identityLookup, certLookup, request = true)
-        requestEncoder = if (multipart) SeconMessage.seconMultipartEncoder else SeconMessage.seconOctetStreamEncoder
-        requestMedia <- OptionT.liftF(requestEncoder.toMedia(outgoingSeconRequest))
-        response <- routes(request.withMedia(requestMedia))
-        incomingSeconResponse <- OptionT.liftF(response.as[SeconMessage[F]])
-        outgoingSeconResponse = incomingSeconResponse.decryptAndVerify(identityLookup, certLookup)
-        responseMedia <- OptionT.liftF(incomingSeconRequest.encoder.toMedia(outgoingSeconResponse))
-      } yield
-        response.withMedia(responseMedia)
+    if (server) {
+      new SeconDecryptMiddleware[F](identityLookup, certLookup)
+        .apply(routes)
+    } else {
+      new SeconEncryptMiddleware[F](identityLookup, certLookup, multipart = multipart)
+        .apply(routes)
     }
   }
 }
