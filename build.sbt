@@ -116,4 +116,5 @@ lazy val gateway = project.in(file("gateway"))
       "io.circe" %% "circe-config" % V.circeConfig,
       "io.circe" %% "circe-generic" % V.circe,
     ),
+    publish / skip := true
   )
