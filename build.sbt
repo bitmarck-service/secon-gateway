@@ -66,6 +66,8 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
 
   publishMavenStyle := true,
 
+  publishTo := sonatypePublishToBundle.value,
+
   sonatypeCredentialHost := "oss.sonatype.org",
 
   credentials ++= (for {
@@ -96,8 +98,7 @@ lazy val core = projectMatrix.in(file("core"))
       "de.bitmarck.bms" %% "fs2-secon" % V.fs2Secon,
       "org.http4s" %% "http4s-server" % V.http4s,
       "io.circe" %% "circe-generic" % V.circe,
-    ),
-    publishTo := sonatypePublishToBundle.value
+    )
   )
   .jvmPlatform(scalaVersions)
 
