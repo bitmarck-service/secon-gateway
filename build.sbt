@@ -85,7 +85,8 @@ lazy val root: Project = project.in(file("."))
     publishArtifact := false,
     publish / skip := true
   )
-  .aggregate(core.projectRefs: _*, gateway)
+  .aggregate(core.projectRefs: _*)
+  .aggregate(gateway)
 
 lazy val core = projectMatrix.in(file("core"))
   .settings(commonSettings)

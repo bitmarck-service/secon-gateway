@@ -24,6 +24,7 @@ class SeconGatewaySuite extends CatsEffectSuite {
     identityLookup = identityLookup,
     certLookup = certLookup,
     server = true,
+    multipart = true,
     uri = uri"http://example.com",
     httpApp = HttpRoutes.of[IO] {
       case request =>
@@ -37,6 +38,7 @@ class SeconGatewaySuite extends CatsEffectSuite {
     identityLookup = identityLookup,
     certLookup = certLookup,
     server = false,
+    multipart = true,
     uri = uri"http://example.com",
     httpApp = seconGatewayServerRoutes.orNotFound
   ).toRoutes
