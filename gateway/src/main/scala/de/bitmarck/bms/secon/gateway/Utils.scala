@@ -22,11 +22,3 @@ extension (self: Uri) {
     authority = uri.authority
   )
 }
-
-extension[F[_]] (self: Message[F]) {
-  def withMedia(media: Media[F]): self.Self =
-    self
-      .transformHeaders(_.removePayloadHeaders)
-      .putHeaders(media.headers)
-      .withEntity(media.body)
-}

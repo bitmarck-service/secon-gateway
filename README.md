@@ -34,7 +34,7 @@ for [Http4s](https://http4s.org/) using [DieTechniker/secon-tool](https://github
 ### build.sbt
 
 ```sbt
-libraryDependencies += "de.bitmarck.bms" %% "http4s-secon" % "0.1.2"
+libraryDependencies += "de.bitmarck.bms" %% "http4s-secon" % "0.2.0"
 ```
 
 ## License
