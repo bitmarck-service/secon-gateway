@@ -1,6 +1,6 @@
 # secon-gateway
 
-[![test](https://github.com/bitmarck-service/http4s-secon/actions/workflows/test.yml/badge.svg)](https://github.com/bitmarck-service/http4s-secon/actions/workflows/test.yml)
+[![build](https://github.com/bitmarck-service/http4s-secon/actions/workflows/build.yml/badge.svg)](https://github.com/bitmarck-service/http4s-secon/actions/workflows/build.yml)
 [![Release Notes](https://img.shields.io/github/release/bitmarck-service/http4s-secon.svg?maxAge=3600)](https://github.com/bitmarck-service/http4s-secon/releases/latest)
 [![Apache License 2.0](https://img.shields.io/github/license/bitmarck-service/http4s-secon.svg?maxAge=3600)](https://www.apache.org/licenses/LICENSE-2.0)
 
@@ -21,7 +21,7 @@ Encryption/Decryption Proxy.
 
 # http4s-secon
 
-[![test](https://github.com/bitmarck-service/http4s-secon/actions/workflows/test.yml/badge.svg)](https://github.com/bitmarck-service/http4s-secon/actions/workflows/test.yml)
+[![build](https://github.com/bitmarck-service/http4s-secon/actions/workflows/build.yml/badge.svg)](https://github.com/bitmarck-service/http4s-secon/actions/workflows/build.yml)
 [![Release Notes](https://img.shields.io/github/release/bitmarck-service/http4s-secon.svg?maxAge=3600)](https://github.com/bitmarck-service/http4s-secon/releases/latest)
 [![Maven Central](https://img.shields.io/maven-central/v/de.bitmarck.bms/http4s-secon_2.13)](https://search.maven.org/artifact/de.bitmarck.bms/http4s-secon_2.13)
 [![Apache License 2.0](https://img.shields.io/github/license/bitmarck-service/http4s-secon.svg?maxAge=3600)](https://www.apache.org/licenses/LICENSE-2.0)
