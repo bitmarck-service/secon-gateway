@@ -14,7 +14,7 @@ Encryption/Decryption Proxy.
   "serverAddress": "0.0.0.0:8080",
   "keyStorePath": "keyStore.p12",
   "password": "pw",
-  "ldapUri": "1.2.3.4:389",
+  "ldapUri": "ldap:389",
   "uri": "https://example.com"
 }
 ```
