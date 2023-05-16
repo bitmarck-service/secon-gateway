@@ -7,7 +7,7 @@ name := (gateway / name).value
 
 val V = new {
   val betterMonadicFor = "0.3.1"
-  val catsEffect = "3.4.11"
+  val catsEffect = "3.5.0"
   val circe = "0.14.5"
   val circeConfig = "0.10.0"
   val fs2Secon = "0.1.0"
