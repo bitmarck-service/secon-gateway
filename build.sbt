@@ -7,12 +7,12 @@ name := (gateway / name).value
 
 val V = new {
   val betterMonadicFor = "0.3.1"
-  val catsEffect = "3.4.10"
+  val catsEffect = "3.4.11"
   val circe = "0.14.5"
   val circeConfig = "0.10.0"
   val fs2Secon = "0.1.0"
   val http4s = "0.23.19"
-  val http4sJdkHttpClient = "0.9.0"
+  val http4sJdkHttpClient = "0.9.1"
   val logbackClassic = "1.4.7"
   val munit = "0.7.29"
   val munitTaglessFinal = "0.2.1"
